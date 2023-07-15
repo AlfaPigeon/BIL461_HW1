@@ -11,9 +11,13 @@
 typedef struct {
     long mtype;
     char mtext[MSG_SIZE];
+    int client_id;
 } Message;
 
+
+
 int main(int argc, char **argv) {
+    
     if (argc != 2) {
         fprintf(stderr, "Usage: %s <client_id>\n", argv[0]);
         exit(1);
@@ -30,8 +34,9 @@ int main(int argc, char **argv) {
     // Inform server of client_id
     Message msg;
     msg.mtype = 1;
+    msg.client_id = atoi(argv[1]);
     sprintf(msg.mtext, "%d", atoi(argv[1]));
-    if (msgsnd(server_mq_id, &msg, sizeof(Message) /*- sizeof(long)*/, 0) == -1) {
+    if (msgsnd(server_mq_id, &msg, sizeof(Message) , 0) == -1) {
         perror("msgsnd failed");
         exit(1);
     }
@@ -45,17 +50,19 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
+    printf("Client mailbox created\n");
+
     while (1) {
         printf("Enter a message to send to the server: ");
         fgets(msg.mtext, MSG_SIZE, stdin);
         msg.mtype = 2;
-        if (msgsnd(server_mq_id, &msg, sizeof(Message) /*- sizeof(long)*/, 0) == -1) {
+        if (msgsnd(server_mq_id, &msg, sizeof(Message), 0) == -1) {
             perror("msgsnd failed");
             exit(1);
         }
         
         // Receive a response
-        if (msgrcv(client_mq_id, &msg, sizeof(Message) - sizeof(long), getpid(), 0) == -1) {
+        if (msgrcv(client_mq_id, &msg, sizeof(Message), getpid(), 0) == -1) {
             perror("msgrcv failed");
             exit(1);
         }
