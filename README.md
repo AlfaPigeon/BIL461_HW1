@@ -11,3 +11,10 @@ Kodun çalışma mekanizması şu şekildedir:
 2- Client server'e mesajı gönderiyor. Mesajın içeriği long mtype, char mtext, int client_id ve int receiver_id şeklindedir. Mtype verisi ile client'in server'e yapmasını istediği şey yollanır. Bu işlemler 4 tanedir ve 1'den 4'e sırasıyla şu şekildedir: server'e kaydedilmek, mesaj göndermek, yanıt almak ve client'i sonlandırmaktır. Mtype 1 olarak gönderilirse client için özel bir thread içinde mailbox oluşturulur ve client'e bildirilir (ilk maddede açıklandığı şekilde gerçekleşir). Mtype 2 olarak gönderilirse aynı içerikte gönderilen receiver'e mtext içindeki mesajın gönderilmesi istenir. Mtype 3 client'e yanıt dönülmesi için kullanılır ve son olarak mtype 4 client'e son vermek için kullanılır.
 
 Bu şekilde iki client arasında server kullanılarak haberleşme sağlanır.
+
+Derlemek ve çalıştırmak için aşağıdaki gibi bir yol izlenmelidir:
+
+1- Öncelikle server çalıştırılmalıdır.
+2- Daha sonra client çalıştırılmalı ve client_id ve receiver_id çalıştırırken verilmelidir.
+3- Daha sonra kodun çalışma mekanizmasında da anlatıldığı gibi başta mtype 1 olacak şekilde mesaj yollanıp server'e bağlanılmalı ve geri gelen mailbox id'sine uyularak mesaj yollanmalıdır.
+4- En sonunda istenen zamanda mtype 4 ile client kapatılabilir.
