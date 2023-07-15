@@ -15,6 +15,9 @@ Bu şekilde iki client arasında server kullanılarak haberleşme sağlanır.
 Derlemek ve çalıştırmak için aşağıdaki gibi bir yol izlenmelidir:
 
 1- Öncelikle server çalıştırılmalıdır.
+
 2- Daha sonra client çalıştırılmalı ve client_id ve receiver_id çalıştırırken verilmelidir.
+
 3- Daha sonra kodun çalışma mekanizmasında da anlatıldığı gibi başta mtype 1 olacak şekilde mesaj yollanıp server'e bağlanılmalı ve geri gelen mailbox id'sine uyularak mesaj yollanmalıdır.
+
 4- En sonunda istenen zamanda mtype 4 ile client kapatılabilir.
